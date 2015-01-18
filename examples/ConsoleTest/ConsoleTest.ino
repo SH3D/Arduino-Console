@@ -2,7 +2,9 @@
 
 void setup() {
 	Serial.begin(115200);
-	console.addx(&Serial);
+	console.add(&Serial);
+	console.add(&Serial);
+	console.add(&Serial);
 	console.printf(F("Hello world\r\n"));
 
 	console.printf("Standard Characters - %d\r\n", 1);
