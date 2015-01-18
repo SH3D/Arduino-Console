@@ -1,7 +1,5 @@
 #include "Console.h"
 
-Console console;
-
 void setup() {
 	Serial.begin(115200);
 	console.addx(&Serial);

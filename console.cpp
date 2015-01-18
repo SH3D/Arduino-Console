@@ -241,3 +241,5 @@ void Console::setLevel(byte l) {
 	level = l;
 }
 
+Console console;
+

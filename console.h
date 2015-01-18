@@ -55,5 +55,8 @@ class Console {
 		char printBuffer[CONSOLE_BUFFER_SIZE];
 };
 
+extern Console console;
+
 #endif
+
 
