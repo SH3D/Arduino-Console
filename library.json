@@ -1,0 +1,12 @@
+{
+  "name": "Console",
+  "keywords": "",
+  "description": "Console TODO",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/SH3D/Arduino-Console"
+  },
+  "frameworks": "arduino",
+  "platforms": "atmelavr"
+}
