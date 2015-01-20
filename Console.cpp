@@ -45,6 +45,7 @@
 
 */
 #include <Console.h>
+#include <Time.h>
 
 // Just a string
 void Console::print(char *out) {
@@ -86,6 +87,9 @@ void Console::printf(String& out, ...) {
 
 // printf support
 void Console::info(char* out, ...) {
+	if (level < CONSOLE_LEVEL_INFO) return;
+	printf(F(CONSOLE_PRE_INFO));
+	printDateTime();
 	va_list argptr;
 	va_start(argptr, out);
 	vsnprintf(printBuffer, CONSOLE_BUFFER_SIZE, out, argptr);
@@ -95,6 +99,9 @@ void Console::info(char* out, ...) {
 
 // Convert FLASH String to String
 void Console::info(const __FlashStringHelper *out, ... ){
+	if (level < CONSOLE_LEVEL_INFO) return;
+	printf(F(CONSOLE_PRE_INFO));
+	printDateTime();
 	va_list argptr;
 	va_start(argptr, out);
 	vsnprintf_P(printBuffer, CONSOLE_BUFFER_SIZE, (const char *)out, argptr);
@@ -104,6 +111,9 @@ void Console::info(const __FlashStringHelper *out, ... ){
 
 // Convert STRING to Char
 void Console::info(String& out, ...) {
+	if (level < CONSOLE_LEVEL_INFO) return;
+	printf(F(CONSOLE_PRE_INFO));
+	printDateTime();
 	va_list argptr;
 	va_start(argptr, out);
 	vsnprintf(printBuffer, CONSOLE_BUFFER_SIZE, out.c_str(), argptr);
@@ -113,6 +123,9 @@ void Console::info(String& out, ...) {
 
 // printf support
 void Console::warn(char* out, ...) {
+	if (level < CONSOLE_LEVEL_WARN) return;
+	printf(F(CONSOLE_PRE_WARN));
+	printDateTime();
 	va_list argptr;
 	va_start(argptr, out);
 	vsnprintf(printBuffer, CONSOLE_BUFFER_SIZE, out, argptr);
@@ -122,6 +135,9 @@ void Console::warn(char* out, ...) {
 
 // Convert FLASH String to String
 void Console::warn(const __FlashStringHelper *out, ... ){
+	if (level < CONSOLE_LEVEL_WARN) return;
+	printf(F(CONSOLE_PRE_WARN));
+	printDateTime();
 	va_list argptr;
 	va_start(argptr, out);
 	vsnprintf_P(printBuffer, CONSOLE_BUFFER_SIZE, (const char *)out, argptr);
@@ -131,6 +147,9 @@ void Console::warn(const __FlashStringHelper *out, ... ){
 
 // Convert STRING to Char
 void Console::warn(String& out, ...) {
+	if (level < CONSOLE_LEVEL_WARN) return;
+	printf(F(CONSOLE_PRE_WARN));
+	printDateTime();
 	va_list argptr;
 	va_start(argptr, out);
 	vsnprintf(printBuffer, CONSOLE_BUFFER_SIZE, out.c_str(), argptr);
@@ -140,6 +159,9 @@ void Console::warn(String& out, ...) {
 
 // printf support
 void Console::error(char* out, ...) {
+	if (level < CONSOLE_LEVEL_ERROR) return;
+	printf(F(CONSOLE_PRE_ERROR));
+	printDateTime();
 	va_list argptr;
 	va_start(argptr, out);
 	vsnprintf(printBuffer, CONSOLE_BUFFER_SIZE, out, argptr);
@@ -149,6 +171,9 @@ void Console::error(char* out, ...) {
 
 // Convert FLASH String to String
 void Console::error(const __FlashStringHelper *out, ... ){
+	if (level < CONSOLE_LEVEL_ERROR) return;
+	printf(F(CONSOLE_PRE_ERROR));
+	printDateTime();
 	va_list argptr;
 	va_start(argptr, out);
 	vsnprintf_P(printBuffer, CONSOLE_BUFFER_SIZE, (const char *)out, argptr);
@@ -158,6 +183,9 @@ void Console::error(const __FlashStringHelper *out, ... ){
 
 // Convert STRING to Char
 void Console::error(String& out, ...) {
+	if (level < CONSOLE_LEVEL_ERROR) return;
+	printf(F(CONSOLE_PRE_ERROR));
+	printDateTime();
 	va_list argptr;
 	va_start(argptr, out);
 	vsnprintf(printBuffer, CONSOLE_BUFFER_SIZE, out.c_str(), argptr);
@@ -165,16 +193,28 @@ void Console::error(String& out, ...) {
 	print(printBuffer);
 }
 
-/* HOW TO easily share 
-void Console::info(char* out, ...) {
-	if (level >= CONSOLE_LEVEL_INFO) {
-		printf(F("INFO: ");
+void Console::printDateTime(uint32_t t) {
+	if (t == 0) {
+		if (!displayDateTime) return;	// Automatic mode
+		#ifdef _Time_h
+		t = now();
+		#endif
+	}
+	#ifdef _Time_h
+	sprintf_P(printBuffer, PSTR("%04d-%02d-%02dT%02d:%02d:%02d"),
+		year(t),
+		month(t),
+		day(t),
+		hour(t),
+		minute(t),
+		second(t)
+	);
+	#else
+	printf(F("*** Time Library not loaded ***"));
+	#endif
+	print(printBuffer);
+	printf(F(CONSOLE_POST_TIME));
 }
-void Console::info(const __FlashStringHelper *out, ... ){
-}
-void Console::info(String& out, ...) {
-}
-*/
 
 void Console::loop() {
 	// Reset cmd
@@ -202,12 +242,12 @@ void Console::processCmd(char in) {
 	else if (cmdCount > 0) {
 		// Add optional ending, or even CRC
 		if (cmdBuffer[cmdCount - 1] != ';') {
-			warn("# Warning - Buffer cleared, must end in trailing ;\r\n");
+			warn("Buffer cleared, must end in trailing ;\r\n");
 			cmdCount = 0;
 		}
 		else {
 			cmd = cmdBuffer[0];
-			val = atoi(&cmdBuffer[1]);
+			val = atol(&cmdBuffer[1]);
 		}
 	}
 }

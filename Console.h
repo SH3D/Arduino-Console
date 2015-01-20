@@ -1,13 +1,20 @@
 #ifndef sh3d_console_h
 #define sh3d_console_h
 #include <Arduino.h>
+#include <Time.h>
 
 #define CONSOLE_STREAMS 5
-#define CONSOLE_LEVEL_ALL 0
-#define CONSOLE_LEVEL_ERROR 1
-#define CONSOLE_LEVEL_WARN 2
-#define CONSOLE_LEVEL_INFO 3
+#define CONSOLE_LEVEL_ERROR 0
+#define CONSOLE_LEVEL_WARN 1
+#define CONSOLE_LEVEL_INFO 2
+#define CONSOLE_LEVEL_ALL 3
 #define CONSOLE_BUFFER_SIZE 100
+
+// TODO - consider making these configurable...
+#define CONSOLE_PRE_INFO "INFO: "
+#define CONSOLE_PRE_WARN "WARN: "
+#define CONSOLE_PRE_ERROR "ERROR: "
+#define CONSOLE_POST_TIME " - "
 
 class Console {
 	public:
@@ -22,6 +29,10 @@ class Console {
 		uint32_t getVal() {return val;}
 		char* getBuffer() { return cmdBuffer; }
 		void processCmd(char in);
+
+		void setDateTime() {displayDateTime = true;}
+		void clearDateTime() {displayDateTime = false;}
+		void printDateTime(uint32_t t = 0);
 
 		void print(char *out);
 
@@ -41,11 +52,12 @@ class Console {
 		void error(const __FlashStringHelper *out, ... );
 		void error(String& out, ...);
 	
-		Console() {}
+		Console() {level = CONSOLE_LEVEL_ALL;}
 
 	protected:
 		Stream* streams[5];
 		uint8_t level;
+		bool displayDateTime;
 
 		uint8_t cmdCount;
 		char cmdBuffer[CONSOLE_BUFFER_SIZE];
