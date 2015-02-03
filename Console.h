@@ -8,7 +8,13 @@
 #define CONSOLE_LEVEL_WARN 1
 #define CONSOLE_LEVEL_INFO 2
 #define CONSOLE_LEVEL_ALL 3
+#if defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)
+#define CONSOLE_BUFFER_SIZE 150
+#define CONSOLE_COMMAND_SIZE 50
+#else
 #define CONSOLE_BUFFER_SIZE 100
+#define CONSOLE_COMMAND_SIZE 25
+#endif
 
 // TODO - consider making these configurable...
 #define CONSOLE_PRE_INFO "INFO: "
@@ -60,7 +66,7 @@ class Console {
 		bool displayDateTime;
 
 		uint8_t cmdCount;
-		char cmdBuffer[CONSOLE_BUFFER_SIZE];
+		char cmdBuffer[CONSOLE_COMMAND_SIZE];
 		byte cmd;
 		uint32_t val;
 
