@@ -235,8 +235,8 @@ void Console::processCmd(char in) {
 		cmdCount++;
 		cmdBuffer[cmdCount] = NULL;
 		if (cmdCount >= CONSOLE_BUFFER_SIZE) {
+			error(F("# CONSOLE: Error, command too long - cmdCount=%d\r\n"), cmdCount);
 			cmdCount = 0;
-			error(F("# CONSOLE: Error, command too long\r\n"));
 		}
 	}
 	else if (cmdCount > 0) {
