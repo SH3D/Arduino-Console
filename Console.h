@@ -76,5 +76,3 @@ class Console {
 extern Console console;
 
 #endif
-
-
