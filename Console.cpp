@@ -67,7 +67,7 @@ void Console::printf(char* out, ...) {
 void Console::printf(const __FlashStringHelper *out, ... ){
 	va_list argptr;
 	va_start(argptr, out);
-	vsnprintf_P(printBuffer, CONSOLE_BUFFER_SIZE, (const char *)out, argptr);
+	VSNPRINTF(printBuffer, CONSOLE_BUFFER_SIZE, (const char *)out, argptr);
 	va_end(argptr);
 	print(printBuffer);
 }
@@ -104,7 +104,7 @@ void Console::info(const __FlashStringHelper *out, ... ){
 	printDateTime();
 	va_list argptr;
 	va_start(argptr, out);
-	vsnprintf_P(printBuffer, CONSOLE_BUFFER_SIZE, (const char *)out, argptr);
+	VSNPRINTF(printBuffer, CONSOLE_BUFFER_SIZE, (const char *)out, argptr);
 	va_end(argptr);
 	print(printBuffer);
 }
@@ -140,7 +140,7 @@ void Console::warn(const __FlashStringHelper *out, ... ){
 	printDateTime();
 	va_list argptr;
 	va_start(argptr, out);
-	vsnprintf_P(printBuffer, CONSOLE_BUFFER_SIZE, (const char *)out, argptr);
+	VSNPRINTF(printBuffer, CONSOLE_BUFFER_SIZE, (const char *)out, argptr);
 	va_end(argptr);
 	print(printBuffer);
 }
@@ -176,7 +176,7 @@ void Console::error(const __FlashStringHelper *out, ... ){
 	printDateTime();
 	va_list argptr;
 	va_start(argptr, out);
-	vsnprintf_P(printBuffer, CONSOLE_BUFFER_SIZE, (const char *)out, argptr);
+	VSNPRINTF(printBuffer, CONSOLE_BUFFER_SIZE, (const char *)out, argptr);
 	va_end(argptr);
 	print(printBuffer);
 }
@@ -242,7 +242,7 @@ void Console::processCmd(char in) {
 	else if (cmdCount > 0) {
 		// Add optional ending, or even CRC
 		if (cmdBuffer[cmdCount - 1] != ';') {
-			warn("Buffer cleared, must end in trailing ;\r\n");
+			warn(F("Buffer cleared, must end in trailing ;\r\n"));
 			cmdCount = 0;
 		}
 		else {

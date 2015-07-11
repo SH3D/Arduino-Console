@@ -11,9 +11,15 @@
 #if defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)
 #define CONSOLE_BUFFER_SIZE 150
 #define CONSOLE_COMMAND_SIZE 50
+#define VSNPRINTF vsnprintf_P
+#elif defined(CORE_TEENSY)
+#define CONSOLE_BUFFER_SIZE 200
+#define CONSOLE_COMMAND_SIZE 75
+#define VSNPRINTF vsnprintf
 #else
 #define CONSOLE_BUFFER_SIZE 140
 #define CONSOLE_COMMAND_SIZE 25
+#define VSNPRINTF vsnprintf_P
 #endif
 
 // TODO - consider making these configurable...
@@ -76,3 +82,4 @@ class Console {
 extern Console console;
 
 #endif
+
