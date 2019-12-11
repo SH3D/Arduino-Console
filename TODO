@@ -1,0 +1,70 @@
+* Top notch documentation
+    * Using F() for strings
+        * Passing F() as param strings (%S instead of %s)
+        * #define VERSION "1.0.7" then print(VERSION) - esp if more than once is still memory, F(VERSION)
+    * Dangers of missing a pointer
+    * Memory - size of library, usage and more
+    * Where it has been tested
+    * Whole supported % commands - and a reference
+    * Reference to all externals and other choices
+
+
+
+* Unit tests
+    * See
+        https://docs.platformio.org/en/latest/plus/unit-testing.html
+        https://github.com/mmurdoch/arduinounit
+        https://github.com/bxparks/UnixHostDuino
+        https://github.com/bxparks/AUnit
+        https://github.com/ianfixes/arduino_ci
+
+* Lots of examples:
+    * Basic
+    * Dynamic buffers
+    * Static buffers
+    * Changing Log Levels
+    * Changing log messages (inheritance?)
+    * Writing to SD Card
+    * Writing to SPIFFS
+    * Rotating logs etc
+    * Removing duplicates
+    * Secondary serial port
+    * Parsing input commands
+    * Capturing all data to and from a Serial Port while passthrough
+    * Simple Command select case
+    * Longer command
+    * Inheritance again - mapping console.log(LOG_WARN) to log.warn
+    * Building a string lookup library to map things - e.g. Enum to NAME
+
+
+
+* Delete this TODO
+* Copy to new GIT (fresh) to release on GitHub (Sh3d or Scott)?
+* Release where libraries are gethered ?
+
+* Ideas:
+    * Can this compile locally in C++
+    * Make the input commands modular
+        * TinyGPS++ way - defines and compile options
+        * Inheritance - great, but if you have a few?
+    * Working with Multiple Arduino environments (eg. platform io)
+    * Split the code up
+        * Top
+            * Begin - create buffers etc
+        * Command - Inputs basically
+            * parseBinary
+            * parse newline (with or without ;)
+            * parse @ commands or similar (start character configurable), split characther multiple
+            * parse NMEA
+        * General Printing
+            * print, printf, printNewLine
+            * console - general
+        * Utilities
+            * FormatDate
+            * FormatBinary
+
+
+References for Scott to review:
+    * https://embeddedartistry.com/blog/2019/12/09/building-a-flexible-logging-library-for-arduino-part-1/
+    * https://embeddedartistry.com/blog/2019/11/18/building-a-printf-library-for-arduino/
+        OMG
